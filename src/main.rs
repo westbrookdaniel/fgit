@@ -18,7 +18,7 @@ Commands:
 
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
-    let mut git_command = Command::new("echo");
+    let mut git_command = Command::new("git");
 
     // Handle --help and --version options
     if let Some(option) = args.iter().next() {
