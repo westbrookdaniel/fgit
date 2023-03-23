@@ -6,7 +6,9 @@ fgit is a command-line tool that wraps around Git and provides a simpler way to 
 
 Conventional commits were created to improve communication and collaboration between developers working on a project. The format consists of a type, scope, and description, with optional footer information such as issue numbers or breaking changes. The standardized format helps to ensure that commit messages are clear and easy to understand, making it easier to track changes and troubleshoot issues.
 
-## Building the Binary
+## Install
+
+### Building the Binary
 
 To use fgit, you need to build the binary first. Here's how to do it:
 
