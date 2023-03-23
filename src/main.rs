@@ -17,7 +17,7 @@ fn main() {
         }
 
         let commit_type = args[1].to_lowercase();
-        let commit_scope = args[2];
+        let commit_scope = &args[2];
         let commit_description = args[3..].join(" ");
         let commit_message = format!("{}({}): {}", commit_type, commit_scope, commit_description);
 
