@@ -27,7 +27,7 @@ fn main() {
         let scope = args[2].to_lowercase();
         let description = args[3..].join(" ");
         let mut commit_message = format!("{}({}): {}", commit_type, scope, description);
-        
+
         let branch_output = Command::new("git")
             .arg("rev-parse")
             .arg("--abbrev-ref")
@@ -35,14 +35,12 @@ fn main() {
             .output()
             .expect("Failed to execute git command");
         let branch_name = String::from_utf8_lossy(&branch_output.stdout).trim().to_string();
-        
+
         if branch_name.starts_with("issue/") {
             if let Some(issue_number) = branch_name[6..].find('-') {
                 let issue_key = &branch_name[6..6 + issue_number];
-                let issue_number = &branch_name[6 + issue_number + 1..];
-                if issue_key.len() == 3 && issue_number.chars().all(|c| c.is_ascii_digit()) {
-                    commit_message.push_str(&format!(" [{}-{}]", issue_key, issue_number));
-                }
+                let issue_number = &branch_name[6 + issue_number + 1..].chars().take_while(|c| c.is_ascii_digit()).collect::<String>();
+                commit_message.push_str(&format!(" [{}-{}]", issue_key, issue_number));
             }
         }
         
