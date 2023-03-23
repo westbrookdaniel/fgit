@@ -1,6 +1,6 @@
 # fgit
 
-fgit is a command-line tool that wraps around Git and provides a simpler way to create conventional commits. Conventional commits follow a standardized format for commit messages, making it easier to understand the purpose of a change.
+fgit is a command-line tool that wraps around Git and provides a simpler way to create conventional commits and other niceties. Conventional commits follow a standardized format for commit messages, making it easier to understand the purpose of a change.
 
 ## Background
 
