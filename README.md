@@ -52,6 +52,13 @@ $ fgit commit feat user Add login form # git commit -m 'feat(user): Add login fo
 $ fgit commit chore deps 'Update to latest' # git commit -m 'chore(deps): Update to latest [ABC-123]'
 ```
 
+Here are some examples of how to use the `issue` command:
+
+```bash
+$ fgit issue ABC-123 # git checkout -b issue/ABC-123
+$ fgit issue ABC-123 extra-info # git checkout -b issue/ABC-123-extra-info
+```
+
 If installed using the instructions above, you can also update fgit by running:
 
 ```bash
