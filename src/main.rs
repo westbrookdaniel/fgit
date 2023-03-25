@@ -44,6 +44,11 @@ fn main() {
 
     // Handle updating fgit
     if args[0] == "update" {
+        Command::new("cd")
+            .arg(env::current_dir().unwrap().to_str().unwrap())
+            .output()
+            .expect("Failed to execute cd command");
+
         let output = Command::new("git")
             .arg("fetch")
             .arg("--dry-run")
@@ -72,6 +77,11 @@ fn main() {
                 exit(0);
             }
         }
+
+        Command::new("cd")
+            .arg("-")
+            .output()
+            .expect("Failed to execute cd command");
 
         exit(0);
     }
