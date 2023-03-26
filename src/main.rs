@@ -5,7 +5,7 @@ mod update;
 use std::env;
 use std::process::{exit, Command};
 
-const VERSION: &str = "1.1.3";
+const VERSION: &str = "1.1.4";
 
 const HELP_TEXT: &str = "Usage: fgit [command]
 

@@ -1,4 +1,3 @@
-use std::io;
 use std::process::{exit, Command};
 
 const VALID_TYPES: [&str; 10] = [
@@ -50,5 +49,7 @@ pub fn handle_commit_command(args: &[String]) {
     Command::new("git")
         .arg("commit")
         .arg("-m")
-        .arg(commit_message);
+        .arg(commit_message)
+        .status()
+        .expect("Failed to execute git command");
 }
