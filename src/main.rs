@@ -4,7 +4,7 @@ use std::{env, io};
 const VALID_TYPES: [&str; 10] = [
     "feat", "fix", "build", "chore", "ci", "docs", "style", "refactor", "perf", "test",
 ];
-const VERSION: &str = "1.1.1";
+const VERSION: &str = "1.1.2";
 
 const HELP_TEXT: &str = "Usage: fgit [command]
 
@@ -41,13 +41,28 @@ fn handle_update_command() {
             .expect("Failed to read input");
 
         if input.trim().to_lowercase() == "y" {
-            let output = Command::new("git")
+            Command::new("git")
                 .arg("pull")
                 .arg("origin")
                 .arg("main")
-                .output()
+                .status()
                 .expect("Failed to execute git command");
-            println!("{}", String::from_utf8_lossy(&output.stdout));
+
+            // Build the project after pulling the new version
+            let build_output = Command::new("cargo")
+                .arg("build")
+                .output()
+                .expect("Failed to execute build command");
+
+            if build_output.status.success() {
+                println!("Project built successfully");
+            } else {
+                eprintln!(
+                    "Build failed:\n{}",
+                    String::from_utf8_lossy(&build_output.stderr)
+                );
+                exit(1);
+            }
         }
     }
 
