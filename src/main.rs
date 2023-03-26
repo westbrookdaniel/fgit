@@ -5,7 +5,7 @@ mod update;
 use std::env;
 use std::process::{exit, Command};
 
-const VERSION: &str = "1.1.2";
+const VERSION: &str = "1.1.3";
 
 const HELP_TEXT: &str = "Usage: fgit [command]
 
@@ -15,7 +15,7 @@ Commands:
     commit <type> <scope> <description>
     issue <issue-key>-<issue-number> [suffix]
     update
-    --help     Show help information
+    --fgit-help     Show help information
     --version  Show version information";
 
 fn main() {
@@ -32,7 +32,7 @@ fn main() {
         "update" => update::handle_update_command(),
         "issue" => issue::handle_issue_command(&args),
         "commit" => commit::handle_commit_command(&args),
-        "--help" => {
+        "--fgit-help" => {
             println!("{}", HELP_TEXT);
         }
         "--version" => {
