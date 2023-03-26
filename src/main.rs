@@ -95,7 +95,11 @@ fn main() {
 
         let issue_key_number = &args[1];
         let suffix = if args.len() == 3 { &args[2] } else { "" };
-        let issue_branch_name = format!("issue/{}-{}-{}", issue_key_number, suffix, VERSION);
+        let issue_branch_name = if !suffix.trim().is_empty() {
+            format!("issue/{}-{}", issue_key_number, suffix)
+        } else {
+            format!("issue/{}", issue_key_number)
+        };
 
         let mut branch_exists = false;
         let branch_output = Command::new("git")
@@ -118,22 +122,25 @@ fn main() {
                 .read_line(&mut new_suffix)
                 .expect("Failed to read input");
             let new_suffix = new_suffix.trim();
-            let new_issue_branch_name =
-                format!("issue/{}-{}-{}", issue_key_number, new_suffix, VERSION);
+            let new_issue_branch_name = if !new_suffix.trim().is_empty() {
+                format!("issue/{}-{}", issue_key_number, new_suffix)
+            } else {
+                format!("issue/{}", issue_key_number)
+            };
             let branch_output = Command::new("git")
                 .arg("show-ref")
                 .arg("--verify")
                 .arg(format!("refs/heads/{}", new_issue_branch_name))
                 .output()
                 .expect("Failed to execute git command");
-            if branch_output.status.success() {
-                branch_exists = true;
-            } else {
-                branch_exists = false;
+            if !branch_output.status.success() {
                 git_command
                     .arg("checkout")
                     .arg("-b")
-                    .arg(&new_issue_branch_name);
+                    .arg(&new_issue_branch_name)
+                    .status() // Execute the command to create the branch
+                    .expect("Failed to execute git command");
+                exit(0);
             }
         }
 
@@ -141,7 +148,10 @@ fn main() {
             git_command
                 .arg("checkout")
                 .arg("-b")
-                .arg(&issue_branch_name);
+                .arg(&issue_branch_name)
+                .status() // Execute the command to create the branch
+                .expect("Failed to execute git command");
+            exit(0);
         }
     }
 
