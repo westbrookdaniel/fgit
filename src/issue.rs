@@ -26,6 +26,15 @@ pub fn handle_issue_command(args: &[String]) {
         branch_exists = true;
     }
 
+    if !branch_exists {
+        Command::new("git")
+            .arg("checkout")
+            .arg("-b")
+            .arg(&issue_branch_name)
+            .status() // Execute the command to create the branch
+            .expect("Failed to execute git command");
+    }
+
     while branch_exists {
         println!(
             "A branch named '{}' already exists. Please enter a new suffix:",
@@ -54,15 +63,7 @@ pub fn handle_issue_command(args: &[String]) {
                 .arg(&new_issue_branch_name)
                 .status() // Execute the command to create the branch
                 .expect("Failed to execute git command");
+            branch_exists = false;
         }
-    }
-
-    if !branch_exists {
-        Command::new("git")
-            .arg("checkout")
-            .arg("-b")
-            .arg(&issue_branch_name)
-            .status() // Execute the command to create the branch
-            .expect("Failed to execute git command");
     }
 }
