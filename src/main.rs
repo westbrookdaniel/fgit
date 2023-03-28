@@ -1,11 +1,12 @@
 mod commit;
 mod issue;
+mod mrs;
 mod update;
 
 use std::env;
 use std::process::{exit, Command};
 
-const VERSION: &str = "1.1.4";
+const VERSION: &str = "1.2.0";
 
 const HELP_TEXT: &str = "Usage: fgit [command]
 
@@ -15,8 +16,9 @@ Commands:
     commit <type> <scope> <description>
     issue <issue-key>-<issue-number> [suffix]
     update
+    mrs [project-id]    List merge requests on gitlab
     --fgit-help     Show help information
-    --version  Show version information";
+    --version       Show version information";
 
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -32,6 +34,7 @@ fn main() {
         "update" => update::handle_update_command(),
         "issue" => issue::handle_issue_command(&args),
         "commit" => commit::handle_commit_command(&args),
+        "mrs" => mrs::handle_mrs_command(&args),
         "--fgit-help" => {
             println!("{}", HELP_TEXT);
         }
