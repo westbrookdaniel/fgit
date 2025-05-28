@@ -12,9 +12,9 @@ Conventional commits were created to improve communication and collaboration bet
 
 To use fgit, you need to build the binary first. Here's how to do it:
 
-- Install Rust by following the instructions on the [official website](https://www.rust-lang.org/tools/install).
+- Install Bun by following the instructions on the [official website](https://bun.sh/).
 - Clone this repo onto your computer
-- Build the binary by running `cargo build --release`. The binary will be placed in the target/release directory.
+- Build the binary by running `bun compile`
 
 ### Assigning the Binary to an Executable
 
