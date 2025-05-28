@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { question, S } from "./util";
+import { getCurrentBranch, question, S } from "./util";
 
 const VALID_TYPES = [
   "feat",
@@ -82,8 +82,4 @@ export async function handleCommitCommand(args: string[]) {
     console.log(`\n${S.Dim}{S.Dim}Aborting...${S.Reset}`);
     process.exit(1);
   }
-}
-
-function getCurrentBranch(): string {
-  return execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
 }

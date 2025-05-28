@@ -7,7 +7,7 @@ import { S } from "./util";
 
 const VERSION = "2.0.0";
 
-const HELP_TEXT = `${S.Cyan}${S.Bold}fgit${S.Reset} is a command-line tool that wraps Git with extra commands and niceties.
+const HELP_TEXT = `${S.Yellow}${S.Bold}fgit${S.Reset} is a command-line tool that wraps Git with extra commands and niceties.
 
 ${S.Bold}Usage: fgit [command]${S.Reset}
 
@@ -18,10 +18,12 @@ ${S.Bold}Commands:${S.Reset}
     ${S.Bold}${S.Blue}commit${S.Reset} <type> <scope> <description>         ${S.Dim}Create a conventional commit with the specified type, scope, and description.
                                                 If on an issue branch, the issue key will be appended automatically.${S.Reset}
 
-    ${S.Bold}${S.Magenta}issue${S.Reset} <issue-key>-<issue-number> [suffix]   ${S.Dim}Create and switch to a new branch using the specified issue key and number.
+    ${S.Bold}${S.Blue}finish${S.Reset}                                      ${S.Dim}Pushes, but first wanrs if you have pending changes${S.Reset}
+
+    ${S.Bold}${S.Blue}issue${S.Reset} <issue-key>-<issue-number> [suffix]   ${S.Dim}Create and switch to a new branch using the specified issue key and number.
                                                 If a branch with the same name exists, you'll be prompted for a suffix.${S.Reset}
 
-    ${S.Bold}${S.Yellow}mrs${S.Reset} [project-id]                            ${S.Dim}List merge requests on gitlab. 
+    ${S.Bold}${S.Magenta}mrs${S.Reset} [project-id]                            ${S.Dim}List merge requests on gitlab. 
                                                 If not provided will use GITLAB_PROJECT_ID. Requires GITLAB_AUTH_TOKEN${S.Reset}
 
     ${S.Bold}${S.Green}update${S.Reset}                                      ${S.Dim}Update fgit to the latest version${S.Reset}
@@ -46,6 +48,9 @@ switch (args[0]) {
     break;
   case "commit":
     await handleCommitCommand(args);
+    break;
+  case "finish":
+    await handleFinishCommand(args);
     break;
   case "mrs":
     handleMrsCommand(args);

@@ -1,3 +1,5 @@
+import { execSync } from "child_process";
+
 export const S = {
   Reset: "\x1b[0m",
   Bright: "\x1b[1m",
@@ -53,4 +55,8 @@ export async function question(prompt: string): Promise<void> {
       },
     );
   });
+}
+
+export function getCurrentBranch(): string {
+  return execSync("git rev-parse --abbrev-ref HEAD").toString().trim();
 }
