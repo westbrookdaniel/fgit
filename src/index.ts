@@ -4,6 +4,7 @@ import { handleIssueCommand } from "./issue";
 import { handleMrsCommand } from "./mrs";
 import { handleUpdateCommand } from "./update";
 import { S } from "./util";
+import { handleFinishCommand } from "./finish";
 
 const VERSION = "2.0.0";
 
@@ -50,7 +51,7 @@ switch (args[0]) {
     await handleCommitCommand(args);
     break;
   case "finish":
-    await handleFinishCommand(args);
+    await handleFinishCommand();
     break;
   case "mrs":
     handleMrsCommand(args);

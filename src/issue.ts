@@ -48,6 +48,6 @@ export async function handleIssueCommand(args: string[]) {
   }
 
   try {
-    execSync(`git checkout -b ${issueBranchName}, { stdio: "inherit" }`);
+    execSync(`git checkout -b ${issueBranchName}`, { stdio: "inherit" });
   } catch {}
 }

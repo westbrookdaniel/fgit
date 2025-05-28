@@ -59,9 +59,7 @@ export async function handleCommitCommand(args: string[]) {
 
   // If no changes are staged, stage all changes
   if (!stagedChanges) {
-    console.log(
-      `${S.Yellow}Warning: No staged changes found. Staging all changes...${S.Reset}\n`,
-    );
+    console.log(`${S.Yellow}Warning: Staging all changes...${S.Reset}\n`);
     execSync("git add .");
   }
 

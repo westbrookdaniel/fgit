@@ -1,6 +1,7 @@
 import { execSync } from "child_process";
+import { question } from "./util";
 
-export function handleUpdateCommand() {
+export async function handleUpdateCommand() {
   try {
     const output = execSync("git fetch --dry-run origin main", {
       stdio: "pipe",
@@ -11,17 +12,13 @@ export function handleUpdateCommand() {
       return;
     }
 
-    console.log(
-      "New version of fgit is available. Do you want to update? (y/n)",
-    );
-    process.stdin.once("data", async (data) => {
-      const input = data.toString().trim().toLowerCase();
-      if (input === "y") {
-        execSync("git pull origin main");
-        execSync("bun compile");
-        console.log("Project built successfully");
-      }
-    });
+    await question("New version of fgit is available. Do you want to update?");
+
+    execSync("git pull origin main", { stdio: "inherit" });
+    console.log();
+    execSync("bun compile", { stdio: "inherit" });
+    console.log();
+    console.log("Project updated successfully\n");
   } catch (error) {
     console.error("Update failed:", error);
     process.exit(1);

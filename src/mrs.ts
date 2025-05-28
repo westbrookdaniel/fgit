@@ -17,7 +17,7 @@ export async function handleMrsCommand(args: string[]) {
   }
 
   const response = await fetch(
-    `https://gitlab.com/api/v4/projects/${projectId}/merge_requests`,
+    `https://gitlab.com/api/v4/projects/${projectId}/merge_requests?state=opened`,
     {
       headers: {
         Accept: "application/json",
@@ -33,9 +33,30 @@ export async function handleMrsCommand(args: string[]) {
 
   const mergeRequests = await response.json();
 
+  console.log();
+
   for (const mr of mergeRequests) {
-    console.log(`${mr.title} by ${mr.author.name}`);
-    console.log(`${mr.web_url}`);
-    console.log();
+    console.log(`${S.Bold}${mr.title}${S.Reset}`);
+    console.log(
+      `${S.Dim}By ${mr.author.name} to ${mr.target_branch}${S.Reset} ${transformStatus(mr.detailed_merge_status)}`,
+    );
+    console.log(`${S.Dim}${mr.web_url}${S.Reset}\n`);
   }
+}
+
+function transformStatus(status: string) {
+  const text = status.replaceAll("_", " ");
+
+  let color = S.Dim;
+  if (status === "mergeable") {
+    color = S.Green;
+  }
+  if (status === "not_open" || status === "checking") {
+    color = S.Yellow;
+  }
+  if (status === "cannot_be_merged" || status === "conflict") {
+    color = S.Red;
+  }
+
+  return `${S.Dim}[${S.Reset}${color}${text}${S.Reset}${S.Dim}]${S.Reset}`;
 }
