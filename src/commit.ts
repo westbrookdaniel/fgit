@@ -67,7 +67,7 @@ export async function handleCommitCommand(args: string[]) {
 
   // Show diff stats
   console.log(`${S.Dim}Changes to be committed:${S.Reset}\n`);
-  console.log(execSync("git diff --staged --stat").toString());
+  execSync("git diff --staged --stat", { stdio: "inherit" });
 
   console.log(`\n${S.Dim}About to commit with message:${S.Reset}\n`);
   console.log(commitMessage);
@@ -75,9 +75,11 @@ export async function handleCommitCommand(args: string[]) {
 
   try {
     await question("Are you sure?");
+    console.log();
     execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
+    console.log();
   } catch (error) {
-    console.log(`${S.Dim}Aborting...${S.Reset}`);
+    console.log(`\n${S.Dim}{S.Dim}Aborting...${S.Reset}`);
     process.exit(1);
   }
 }

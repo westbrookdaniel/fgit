@@ -41,13 +41,16 @@ export async function question(prompt: string): Promise<void> {
   });
 
   return new Promise((resolve, reject) => {
-    readline.question(`${prompt} (y/N) `, (answer: string) => {
-      readline.close();
-      if (answer.toLowerCase() === "y") {
-        resolve();
-      } else {
-        reject(new Error("User declined"));
-      }
-    });
+    readline.question(
+      `${S.Green}?${S.Reset} ${prompt} ${S.Dim}(y/N)${S.Reset} `,
+      (answer: string) => {
+        readline.close();
+        if (answer.toLowerCase() === "y") {
+          resolve();
+        } else {
+          reject(new Error("User declined"));
+        }
+      },
+    );
   });
 }
