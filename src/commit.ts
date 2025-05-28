@@ -77,7 +77,7 @@ export async function handleCommitCommand(args: string[]) {
     execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
     console.log();
   } catch (error) {
-    console.log(`\n${S.Dim}{S.Dim}Aborting...${S.Reset}`);
+    console.log(`\n${S.Dim}Aborting...${S.Reset}`);
     process.exit(1);
   }
 }
