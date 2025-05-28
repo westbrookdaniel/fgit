@@ -45,7 +45,7 @@ switch (args[0]) {
     handleIssueCommand(args);
     break;
   case "commit":
-    handleCommitCommand(args);
+    await handleCommitCommand(args);
     break;
   case "mrs":
     handleMrsCommand(args);

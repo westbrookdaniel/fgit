@@ -33,3 +33,21 @@ export const S = {
   Underline: "\x1b[4m",
   Strikethrough: "\x1b[9m",
 };
+
+export async function question(prompt: string): Promise<void> {
+  const readline = require("readline").createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve, reject) => {
+    readline.question(`${prompt} (y/N) `, (answer: string) => {
+      readline.close();
+      if (answer.toLowerCase() === "y") {
+        resolve();
+      } else {
+        reject(new Error("User declined"));
+      }
+    });
+  });
+}

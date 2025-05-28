@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { S } from "./util";
+import { question, S } from "./util";
 
 const VALID_TYPES = [
   "feat",
@@ -23,7 +23,7 @@ const COMMIT_HELP = `${S.Red}Usage: fgit commit <type> <scope> <description>${S.
 ${S.Dim}\`fgit --fgit-help\` for more details${S.Reset}
 `;
 
-export function handleCommitCommand(args: string[]) {
+export async function handleCommitCommand(args: string[]) {
   if (args.length < 3) {
     console.log(COMMIT_HELP);
     process.exit(1);
@@ -54,9 +54,32 @@ export function handleCommitCommand(args: string[]) {
     }
   }
 
+  // Check if there are staged changes
+  const stagedChanges = execSync("git diff --cached --name-only").toString();
+
+  // If no changes are staged, stage all changes
+  if (!stagedChanges) {
+    console.log(
+      `${S.Yellow}Warning: No staged changes found. Staging all changes...${S.Reset}\n`,
+    );
+    execSync("git add .");
+  }
+
+  // Show diff stats
+  console.log(`${S.Dim}Changes to be committed:${S.Reset}\n`);
+  console.log(execSync("git diff --staged --stat").toString());
+
+  console.log(`\n${S.Dim}About to commit with message:${S.Reset}\n`);
+  console.log(commitMessage);
+  console.log();
+
   try {
+    await question("Are you sure?");
     execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
-  } catch {}
+  } catch (error) {
+    console.log(`${S.Dim}Aborting...${S.Reset}`);
+    process.exit(1);
+  }
 }
 
 function getCurrentBranch(): string {
