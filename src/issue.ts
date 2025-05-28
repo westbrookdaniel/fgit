@@ -1,9 +1,10 @@
 import { execSync } from "child_process";
+import { S } from "./util";
 
 export async function handleIssueCommand(args: string[]) {
   if (args.length < 2 || args.length > 3) {
     console.error("Usage: fgit issue <issue-key>-<issue-number> [suffix]");
-    console.log("\n\`fgit --fgit-help` for more details\n");
+    console.log(`${S.Dim}\n\`fgit --fgit-help\` for more details\n${S.Reset}`);
     process.exit(1);
   }
 
@@ -46,5 +47,7 @@ export async function handleIssueCommand(args: string[]) {
     // Branch doesn't exist
   }
 
-  execSync(`git checkout -b ${issueBranchName}`);
+  try {
+    execSync(`git checkout -b ${issueBranchName}, { stdio: "inherit" }`);
+  } catch {}
 }

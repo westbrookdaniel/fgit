@@ -1,4 +1,5 @@
 import { execSync } from "child_process";
+import { S } from "./util";
 
 const VALID_TYPES = [
   "feat",
@@ -13,10 +14,18 @@ const VALID_TYPES = [
   "test",
 ];
 
+const COMMIT_HELP = `${S.Red}Usage: fgit commit <type> <scope> <description>${S.Reset}
+
+    Available types: ${VALID_TYPES.join(", ")}
+
+    Example: fgit commit feat auth add login functionality
+
+${S.Dim}\`fgit --fgit-help\` for more details${S.Reset}
+`;
+
 export function handleCommitCommand(args: string[]) {
   if (args.length < 3) {
-    console.error("Usage: fgit commit <type> <scope> <description>");
-    console.log("\n\`fgit --fgit-help` for more details\n");
+    console.log(COMMIT_HELP);
     process.exit(1);
   }
 
@@ -27,7 +36,7 @@ export function handleCommitCommand(args: string[]) {
         ", ",
       )}`,
     );
-    console.log("\n\`fgit --fgit-help` for more details\n");
+    console.log(`${S.Dim}\n\`fgit --fgit-help\` for more details\n${S.Reset}`);
     process.exit(1);
   }
 
@@ -45,7 +54,9 @@ export function handleCommitCommand(args: string[]) {
     }
   }
 
-  execSync(`git commit -m "${commitMessage}"`);
+  try {
+    execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
+  } catch {}
 }
 
 function getCurrentBranch(): string {

@@ -1,3 +1,5 @@
+import { S } from "./util";
+
 export async function handleMrsCommand(args: string[]) {
   const token = process.env.GITLAB_AUTH_TOKEN;
   if (!token) {
@@ -10,7 +12,7 @@ export async function handleMrsCommand(args: string[]) {
     console.error(
       "Error: Missing project-id argument, or try adding a GITLAB_PROJECT_ID environment variable",
     );
-    console.log("\n\`fgit --fgit-help` for more details\n");
+    console.log(`${S.Dim}\n\`fgit --fgit-help\` for more details\n${S.Reset}`);
     process.exit(1);
   }
 
