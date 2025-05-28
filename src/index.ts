@@ -30,7 +30,7 @@ Commands:
                                                 If a branch with the same name exists, you'll be prompted for a suffix.
 
     mrs [project-id]                            List merge requests on gitlab. 
-                                                If not provided will use GITLAB_PROJECT_ID. Requires GITLAB_TOKEN
+                                                If not provided will use GITLAB_PROJECT_ID. Requires GITLAB_AUTH_TOKEN
 
     update                                      Update fgit to the latest version
 
@@ -45,6 +45,7 @@ function getCurrentBranch(): string {
 function handleCommitCommand(args: string[]) {
   if (args.length < 3) {
     console.error("Usage: fgit commit <type> <scope> <description>");
+    console.log("\n\`fgit --fgit-help` for more details\n");
     process.exit(1);
   }
 
@@ -55,6 +56,7 @@ function handleCommitCommand(args: string[]) {
         ", ",
       )}`,
     );
+    console.log("\n\`fgit --fgit-help` for more details\n");
     process.exit(1);
   }
 
@@ -78,6 +80,7 @@ function handleCommitCommand(args: string[]) {
 async function handleIssueCommand(args: string[]) {
   if (args.length < 2 || args.length > 3) {
     console.error("Usage: fgit issue <issue-key>-<issue-number> [suffix]");
+    console.log("\n\`fgit --fgit-help` for more details\n");
     process.exit(1);
   }
 
@@ -123,9 +126,9 @@ async function handleIssueCommand(args: string[]) {
 }
 
 async function handleMrsCommand(args: string[]) {
-  const token = process.env.GITLAB_TOKEN;
+  const token = process.env.GITLAB_AUTH_TOKEN;
   if (!token) {
-    console.error("Error: Missing GITLAB_TOKEN environment variable");
+    console.error("Error: Missing GITLAB_AUTH_TOKEN environment variable");
     process.exit(1);
   }
 
@@ -134,6 +137,7 @@ async function handleMrsCommand(args: string[]) {
     console.error(
       "Error: Missing project-id argument, or try adding a GITLAB_PROJECT_ID environment variable",
     );
+    console.log("\n\`fgit --fgit-help` for more details\n");
     process.exit(1);
   }
 
@@ -155,7 +159,9 @@ async function handleMrsCommand(args: string[]) {
   const mergeRequests = await response.json();
 
   for (const mr of mergeRequests) {
-    console.log(`${mr.title} by ${mr.author.name} (${mr.web_url})`);
+    console.log(`${mr.title} by ${mr.author.name}`);
+    console.log(`${mr.web_url}`);
+    console.log();
   }
 }
 
@@ -177,7 +183,7 @@ function handleUpdateCommand() {
       const input = data.toString().trim().toLowerCase();
       if (input === "y") {
         execSync("git pull origin main");
-        execSync("bun build ./src/index.ts --compile --outfile ./fgit");
+        execSync("bun compile");
         console.log("Project built successfully");
       }
     });
