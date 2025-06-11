@@ -16,6 +16,8 @@ ${S.Dim}All commands not listed below will be passed through to Git.
 For example, \`fgit status\` will run \`git status\`.${S.Reset}
 
 ${S.Bold}Commands:${S.Reset}
+    ${S.Bold}${S.Blue}git${S.Reset}                                         ${S.Dim}Explicitly use a git command${S.Reset}
+
     ${S.Bold}${S.Blue}commit${S.Reset} <type> <scope> <description>         ${S.Dim}Create a conventional commit with the specified type, scope, and description.
                                                 If on an issue branch, the issue key will be appended automatically.${S.Reset}
 
@@ -61,6 +63,11 @@ switch (args[0]) {
     break;
   case "--version":
     console.log(`fgit version ${VERSION}`);
+    break;
+  case "git":
+    try {
+      execSync(`git ${args.slice(1).join(" ")}`, { stdio: "inherit" });
+    } catch {}
     break;
   default:
     try {
