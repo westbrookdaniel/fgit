@@ -66,14 +66,9 @@ export async function handleCommitCommand(args: string[]) {
   // Show diff stats
   console.log(`${S.Dim}Changes to be committed:${S.Reset}\n`);
   execSync("git diff --staged --stat", { stdio: "inherit" });
-
-  console.log(`\n${S.Dim}About to commit with message:${S.Reset}\n`);
-  console.log(commitMessage);
   console.log();
 
   try {
-    await question("Are you sure?");
-    console.log();
     execSync(`git commit -m "${commitMessage}"`, { stdio: "inherit" });
     console.log();
   } catch (error) {
